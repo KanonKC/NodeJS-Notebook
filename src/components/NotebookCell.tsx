@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import Editor from "@monaco-editor/react"
-import { Play } from "lucide-react"
+import { Play, HelpCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface NotebookCellProps {
@@ -74,23 +74,56 @@ export const NotebookCell: React.FC<NotebookCellProps> = ({
     }, 100)
   }
 
-  // Handle OUTPUT text
+  // Handle SPECIAL text blocks
   if (language === "markdown") {
     const content = source.join("")
-    if (content.startsWith("**OUTPUT**")) {
-      const outputValue = content.replace("**OUTPUT**", "").trim().replace(/`/g, "")
+
+    // 1. Handle OUTPUT blocks
+    if (content.trim().startsWith("**OUTPUT**")) {
+      const outputValue = content.replace("**OUTPUT**", "").trim()
       return (
         <div className="mb-10 p-6 bg-white border border-dashed border-stone-200 rounded-2xl shadow-sm">
           <div className="text-[10px] uppercase tracking-widest text-orange-600 mb-3 bg-orange-50 w-fit px-2 py-0.5 rounded">Expected Output</div>
-          <div className="font-mono text-sm text-zinc-600 break-all leading-relaxed">
-            {outputValue}
+          <div className="font-mono text-sm text-zinc-600 ">
+            {outputValue.slice(1, -1)}
+          </div>
+        </div>
+      )
+    }
+
+    // 2. Handle QUESTION blocks
+    if (content.trim().includes("[QUESTION]")) {
+      const questionText = content.replace(/(\*\*|)?\[QUESTION\](\*\*|)?\s*:?\s*/, "").trim()
+      return (
+        <div className="mb-10 p-6 bg-blue-50/50 border border-blue-100 rounded-2xl shadow-sm flex gap-4">
+          <div className="flex-shrink-0 w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+            <HelpCircle className="w-6 h-6 text-white" />
+          </div>
+          <div>
+            <div className="text-[10px] uppercase tracking-widest font-bold text-blue-600 mb-1">Critical Thinking</div>
+            <div className="text-zinc-800 font-medium leading-relaxed prose prose-blue prose-sm max-w-none">
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  code({ node, inline, className, children, ...props }: any) {
+                    return (
+                      <code className="bg-blue-100 text-blue-800 px-1 py-0.5 rounded" {...props}>
+                        {children}
+                      </code>
+                    )
+                  }
+                }}
+              >
+                {questionText}
+              </ReactMarkdown>
+            </div>
           </div>
         </div>
       )
     }
 
     return (
-      <div className="prose prose-zinc max-w-none mb-10 py-2 font-medium">
+      <div className="prose prose-zinc max-w-none mb-10 py-2">
         <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
       </div>
     )
@@ -108,8 +141,8 @@ export const NotebookCell: React.FC<NotebookCellProps> = ({
           disabled={isRunning}
           className={cn(
             "flex items-center gap-2 px-4 py-1.5 text-xs text-white rounded-full transition-all active:scale-95 shadow-md",
-            isRunning 
-              ? "bg-zinc-700 cursor-not-allowed opacity-80" 
+            isRunning
+              ? "bg-zinc-700 cursor-not-allowed opacity-80"
               : "bg-zinc-900 hover:bg-zinc-800 shadow-zinc-900/10"
           )}
         >

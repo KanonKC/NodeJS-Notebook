@@ -38,7 +38,7 @@ function App() {
               <h1 className="text-4xl md:text-5xl font-black text-zinc-900 tracking-tight leading-tight">
                 {activeChapter.title.split('. ')[1]}
               </h1>
-              <p className="text-zinc-600 text-lg max-w-2xl font-medium leading-relaxed">
+              <p className="text-zinc-600 text-lg max-w-2xl leading-relaxed">
                 เรียนรู้ JavaScript และ Node.js พื้นฐานแบบ Interactive ในรูปแบบ Notebook ที่คุณสามารถแก้ไขและรันโค้ดได้ทันที
               </p>
             </div>
