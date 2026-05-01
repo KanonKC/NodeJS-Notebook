@@ -69,10 +69,24 @@ export const NotebookCell: React.FC<NotebookCellProps> = ({
     }
   }
 
+  // Handle OUTPUT text
   if (language === "markdown") {
+    const content = source.join("")
+    if (content.startsWith("**OUTPUT**")) {
+      const outputValue = content.replace("**OUTPUT**", "").trim().replace(/`/g, "")
+      return (
+        <div className="mb-8 p-4 bg-zinc-100 dark:bg-zinc-900/30 border border-dashed border-zinc-300 dark:border-zinc-700 rounded-lg">
+          <div className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 mb-2">Expected Output</div>
+          <div className="font-mono text-sm text-zinc-600 dark:text-zinc-400 break-all leading-relaxed">
+            {outputValue}
+          </div>
+        </div>
+      )
+    }
+
     return (
       <div className="prose prose-zinc dark:prose-invert max-w-none mb-8 px-4 py-2">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>{source.join("")}</ReactMarkdown>
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
       </div>
     )
   }
