@@ -17,9 +17,7 @@ export const NotebookCell: React.FC<NotebookCellProps> = ({
   initialOutputs = [],
 }) => {
   const [code, setCode] = useState(source.join(""))
-  const [output, setOutput] = useState<string[]>(
-    initialOutputs.map((o) => JSON.stringify(o, null, 2))
-  )
+  const [output, setOutput] = useState<string[]>([])
 
   const handleEditorBeforeMount = (monaco: any) => {
     monaco.editor.defineTheme("nnb-theme", {
@@ -47,7 +45,10 @@ export const NotebookCell: React.FC<NotebookCellProps> = ({
     })
   }
 
+  const [isRunning, setIsRunning] = useState(false)
+
   const runCode = () => {
+    setIsRunning(true)
     const logs: string[] = []
     const originalLog = console.log
     console.log = (...args: any[]) => {
@@ -55,18 +56,22 @@ export const NotebookCell: React.FC<NotebookCellProps> = ({
       originalLog(...args)
     }
 
-    try {
-      // Create a function from the code and execute it
-      const result = new Function(code)()
-      if (result !== undefined) {
-        logs.push(`=> ${JSON.stringify(result)}`)
+    // Small timeout to simulate execution and allow animation to trigger correctly
+    setTimeout(() => {
+      try {
+        // Create a function from the code and execute it
+        const result = new Function(code)()
+        if (result !== undefined) {
+          logs.push(`=> ${JSON.stringify(result)}`)
+        }
+      } catch (err: any) {
+        logs.push(`Error: ${err.message}`)
+      } finally {
+        console.log = originalLog
+        setOutput(logs)
+        setIsRunning(false)
       }
-    } catch (err: any) {
-      logs.push(`Error: ${err.message}`)
-    } finally {
-      console.log = originalLog
-      setOutput(logs)
-    }
+    }, 100)
   }
 
   // Handle OUTPUT text
@@ -100,10 +105,16 @@ export const NotebookCell: React.FC<NotebookCellProps> = ({
         </div>
         <button
           onClick={runCode}
-          className="flex items-center gap-2 px-4 py-1.5 text-xs text-white bg-zinc-900 rounded-full hover:bg-zinc-800 transition-all active:scale-95 shadow-md shadow-zinc-900/10"
+          disabled={isRunning}
+          className={cn(
+            "flex items-center gap-2 px-4 py-1.5 text-xs text-white rounded-full transition-all active:scale-95 shadow-md",
+            isRunning 
+              ? "bg-zinc-700 cursor-not-allowed opacity-80" 
+              : "bg-zinc-900 hover:bg-zinc-800 shadow-zinc-900/10"
+          )}
         >
-          <Play className="w-3 h-3 fill-white" />
-          Run Code
+          <Play className={cn("w-3 h-3 fill-white", isRunning && "animate-pulse")} />
+          {isRunning ? "Running..." : "Run Code"}
         </button>
       </div>
       <div className="font-mono text-sm">
@@ -128,8 +139,8 @@ export const NotebookCell: React.FC<NotebookCellProps> = ({
         />
       </div>
       {output.length > 0 && (
-        <div className="p-6 bg-zinc-900 font-mono text-xs text-zinc-300">
-          <div className="text-zinc-500 mb-3 uppercase text-[10px] tracking-wider font-bold border-b border-zinc-800 pb-2">Console Output</div>
+        <div className="p-6 bg-zinc-900 font-mono text-xs text-zinc-300 ">
+          <div className="text-zinc-500 mb-3 uppercase text-[10px] tracking-wider border-b border-zinc-800 pb-2">Console Output</div>
           {output.map((line, i) => (
             <div key={i} className="whitespace-pre-wrap mb-1.5 last:mb-0 leading-relaxed">{line}</div>
           ))}
