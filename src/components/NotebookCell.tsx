@@ -93,6 +93,7 @@ export const NotebookCell: React.FC<NotebookCellProps> = ({
         <Editor
           height="200px"
           defaultLanguage="javascript"
+          language="javascript"
           defaultValue={code}
           theme="nnb-theme"
           beforeMount={handleEditorBeforeMount}
@@ -104,6 +105,7 @@ export const NotebookCell: React.FC<NotebookCellProps> = ({
             scrollBeyondLastLine: false,
             automaticLayout: true,
             padding: { top: 16, bottom: 16 },
+            fixedOverflowWidgets: true,
           }}
         />
       </div>
