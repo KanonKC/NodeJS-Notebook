@@ -1,0 +1,353 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "# Part 3 - Spread Operator\r\nสำหรับหัวข้อนี้เราจะมาพูดถึง **\"Spread Operator\"** ซึ่งเป็นตัวดำเนินการตัวนึง  \r\nที่ใช้กับ Array/Object โดยจะมีสัญลักษณ์เป็น `...` (จุด 3 จุด)\r\nซึ่งจะทำให้การจัดการกับข้อมูลใน Array/Object ได้ดีและสะดวกมากขึ้น โดยเฉพาะตอนที่ไปเขียนตัว React.js เลย"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "สมมุติเรามีข้อมูลแบบนี้"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const array = [1,2,3,4,5]"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "เมื่อก่อนหากเราต้องการสร้าง Array ใหม่ที่เหมือนกับ Array ตัวข้างบน แต่มีเลข 6 เพิ่มมาด้วย เราก็จะทำแบบนี้ใช่ไหมครับ"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let new_array = []\r\nfor(var i=0;i<array.length;i++){\r\n    new_array.push(array[i])\r\n}\r\nnew_array.push(6)\r\nconsole.log(new_array)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "เหตุผลที่เราไม่สามารถจับ `array = new_array` ได้เลยเป็นเพราะจะทำให้ `array` กับ `new_array` เป็นตัวเดียวกัน เป๊ะๆ  \r\nทำให้เราต้องมานั่งลูปทีละค่าใส่เข้าไป และถ้าเราจะใส่ค่าใหม่เพิ่มไปเราก็ต้องมาใช้ `.push()` ต่อ  \r\n\r\nซึ่งเราสามารถลดรูปการเขียนสิ่งเหล่านี้ได้ โดยการใช้ตัวดำเนินการที่ชื่อว่า \"Spread Operator\""
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let new_array_spread = [...array,6]\r\nconsole.log(new_array_spread)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 3.1 - Spread Operator In Array"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const array = [1,2,3,4,5]"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let test1 = [...array]\r\nconsole.log(test1)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**[QUESTION]** คิดว่า `[...array]` มีความหมายว่าอย่างไร"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let test2 = [...array,6]\r\nconsole.log(test2)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let test3 = [999,...array,\"Hello\"]\r\nconsole.log(test3)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**[QUESTION]** ทำไมถึงได้ผลลัพธ์เช่นนั้น และถ้าเราไม่ใช้ Spread Operator แล้วเราจะใช้ Method อะไรของ Array แทนได้บ้าง (คำสั่งที่ใส่ค่าเข้าไปใน Array)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### Exercise\r\nลองสร้าง Array ต่อไปนี้ โดยใช้ Spread Operator ช่วย เพื่อให้สามารถสร้าง Array ได้ภายในบรรทัดเดียว  \r\n**_---!!! ในแต่ละข้อจะกำหนดว่าจะให้เขียนค่าใน Array ได้มากที่สุดกี่ตัว พยายามอย่าให้เขียนเกิน !!!---_**  \r\n  \r\nเช่น   \r\n`[...array,6]` นับเป็น 2 ตัว (คือมี `...array` กับ `6`)  \r\n`[7,...array,6]` นับเป็น 3 ตัว (คือมี `7`, `...array` และ `6`)  \r\n\r\nใช้ตัวแปรนี้เพื่อช่วยสร้าง Array ข้างล่าง"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const array = [1,2,3,4,5]"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**#1**  \r\n`[ 1, 2, 3, 4, 5, 6 ]`  \r\nให้เขียนได้ไม่เกิน 2 ตัว"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "/* ส่วนนี้น้องต้องเขียนนะครับ */\r\nconsole.log([])"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**#2**  \r\n`[ 900, 1, 2, 3, 4, 5 ]`  \r\nให้เขียนได้ไม่เกิน 2 ตัว"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "/* ส่วนนี้น้องต้องเขียนนะครับ */\r\nconsole.log([])"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**#3**  \r\n`\r\n[\r\n  10, 20, 30,  1, 2,\r\n   3,  4,  5, 50\r\n]\r\n`  \r\nให้เขียนได้ไม่เกิน 5 ตัว"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "/* ส่วนนี้น้องต้องเขียนนะครับ */\r\nconsole.log([])"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**#4**  \r\n`[ 1, 2, 3, 4 ]`  \r\nให้เขียนได้ไม่เกิน 2 ตัว  \r\n**[HINT]** `slice`"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "/* ส่วนนี้น้องต้องเขียนนะครับ */\r\nconsole.log([])"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**#5**  \r\n`[ 1, 2, 4, 5 ]`  \r\nให้เขียนได้ไม่เกิน 2 ตัว  \r\n**[HINT]** ใน 1 กล่อง Array จะมี Spread Operator หลายอันก็ได้"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "/* ส่วนนี้น้องต้องเขียนนะครับ */\r\nconsole.log([])"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 3.2 - Spread Operator In Object"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const item = {\r\n    name: \"Apple\",\r\n    price: 35.99,\r\n    tags: [\"fruit\",\"consumable\"],\r\n    stock: 10\r\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let new_item1 = {...item}\r\nconsole.log(new_item1)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**[QUESTION]** คิดว่า `{...item}` มีความหมายว่าอย่างไร"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let new_item2 = {...item, rating: 5.0}\r\nconsole.log(new_item2)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**[QUESTION]** ทำไมถึงได้ผลลัพธ์เช่นนั้น และถ้าเราไม่ใช้ Spread Operator เราจะใช้วิธีใดในการยัด `rating` ใส่เข้าไปใน Object ใหม่นี้ (`new_item2`)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let new_item3 = {...item, price: 999.99}\r\nconsole.log(new_item3)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**[QUESTION]** ทำไมถึงได้ผลลัพธ์เช่นนั้น"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let new_item4 = {price: 999.99,...item}\r\nconsole.log(new_item4)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**[QUESTION]** ทำไมค่า `price` จึงยังมีราคาเท่าเดิมกับ `item` ตอนแรก ทั้งที่เราใส่ `999.99` ไปแล้ว"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let new_item5 = {...item,stock: item.stock-1}\r\nconsole.log(new_item5)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**[QUESTION]** ทำไมถึงได้ผลลัพธ์เช่นนั้น"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### Exercise\r\nลองสร้าง Object `item` ข้างล่างใหม่ โดยเพิ่ม `is_premium: true` และเพิ่ม `healthy` เข้าไปใน `tags` ที่มีอยู่  \r\nลองใช้ Spread Operator ช่วยเพื่อให้สามารถสร้าง Object ดังกล่าวได้ภายในบรรทัดเดียว  \r\n\r\n**_---!!! กำหนดว่าให้เขียนค่าใน Object ได้มากที่สุด 3 ตัว พยายามอย่าให้เขียนเกิน !!!---_**  \r\n\r\nเช่น\r\n`{...item,price: 39.99}` นับเป็น 2 ตัว (คือมี `...item` กับ `price: 39.99`)  \r\n`{...item,price: 39.99,stock: 9}` นับเป็น 3 ตัว (คือมี `...item`, `price: 39.99` กับ `stock: 9`)  "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const item = {\r\n    name: \"Apple\",\r\n    price: 35.99,\r\n    tags: [\"fruit\",\"consumable\"],\r\n    stock: 10\r\n  }"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "/* ส่วนนี้น้องต้องเขียนนะครับ */\r\nconsole.log({})"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "{}",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**Output**  \r\n```\r\n{\r\n  name: 'Apple',\r\n  price: 35.99,\r\n  tags: [ 'fruit', 'consumable', 'healthy' ],\r\n  stock: 10,\r\n  is_premium: true\r\n}\r\n```"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 3.3 - Spread Operator In Function (Rest Parameter)\r\nอันนี้ของแถมละกันน เนื่องจากเราก็สามารถใช้ Spread Operater Function ได้ด้วย\r\nทำให้เราอาจจะกำหนด Function ที่มีจำนวน Parameter ที่ไม่แน่นอนได้ "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "function getSum(...numbers){\r\n    let total = 0\r\n    for(var i=0;i<numbers.length;i++){\r\n        total += numbers[i]\r\n    }\r\n    return total\r\n}\r\n\r\nconsole.log(\r\n    getSum(1),\r\n    getSum(10,20,30),\r\n    getSum(1,2,3,4,5,6,7,8,9,10)\r\n)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**[QUESTION]** คิดว่า `numbers` จะเก็บข้อมูลเป็น Type อะไร"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### Exercise\r\nลองสร้าง Function ที่จะนำตัวเลขทั้งหมดมาทำการ บวกกันหรือคูณกัน\r\nแล้วแต่เป็นคนกำหนดเครื่องหมาย `+`,`*` ตามด้วยตัวเลขกี่ตัวก็ได้"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "function calculate(operator,...numbers){\r\n    /* ส่วนนี้ต้องเขียนนะครับ */\r\n}\r\n\r\nconsole.log(\r\n    calculate('+',1,2,3),\r\n    calculate('*',1,2,3),\r\n    calculate('+',1,2,3,4,5),\r\n    calculate('*',1,2,3,4,5),\r\n    calculate('+',1),\r\n    calculate('*',1),\r\n    calculate('*',5154,897846,21855,0,4,5465)\r\n)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**OUTPUT**  \r\n`6 6 15 120 1 1 0`"
+            ],
+            "outputs": []
+        }
+    ]
+}

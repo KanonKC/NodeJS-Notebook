@@ -75,9 +75,9 @@ export const NotebookCell: React.FC<NotebookCellProps> = ({
     if (content.startsWith("**OUTPUT**")) {
       const outputValue = content.replace("**OUTPUT**", "").trim().replace(/`/g, "")
       return (
-        <div className="mb-8 p-4 bg-zinc-100 dark:bg-zinc-900/30 border border-dashed border-zinc-300 dark:border-zinc-700 rounded-lg">
-          <div className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 mb-2">Expected Output</div>
-          <div className="font-mono text-sm text-zinc-600 dark:text-zinc-400 break-all leading-relaxed">
+        <div className="mb-10 p-6 bg-white border border-dashed border-stone-200 rounded-2xl shadow-sm">
+          <div className="text-[10px] uppercase tracking-widest text-orange-600 mb-3 bg-orange-50 w-fit px-2 py-0.5 rounded">Expected Output</div>
+          <div className="font-mono text-sm text-zinc-600 break-all leading-relaxed">
             {outputValue}
           </div>
         </div>
@@ -85,27 +85,30 @@ export const NotebookCell: React.FC<NotebookCellProps> = ({
     }
 
     return (
-      <div className="prose prose-zinc dark:prose-invert max-w-none mb-8 px-4 py-2">
+      <div className="prose prose-zinc max-w-none mb-10 py-2 font-medium">
         <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
       </div>
     )
   }
 
   return (
-    <div className="mb-8 border rounded-lg overflow-hidden bg-zinc-950 shadow-lg">
-      <div className="flex items-center justify-between px-4 py-2 bg-zinc-900 border-b">
-        <span className="text-xs font-mono text-zinc-400">JavaScript</span>
+    <div className="mb-10 border border-stone-200 rounded-2xl overflow-hidden bg-white shadow-xl shadow-stone-200/50">
+      <div className="flex items-center justify-between px-6 py-3 bg-stone-50 border-b border-stone-100">
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full bg-orange-400" />
+          <span className="text-xs text-zinc-500 uppercase tracking-wider">JavaScript Runner</span>
+        </div>
         <button
           onClick={runCode}
-          className="flex items-center gap-2 px-3 py-1 text-xs font-medium text-white bg-green-600 rounded hover:bg-green-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-1.5 text-xs text-white bg-zinc-900 rounded-full hover:bg-zinc-800 transition-all active:scale-95 shadow-md shadow-zinc-900/10"
         >
-          <Play className="w-3 h-3" />
-          Run
+          <Play className="w-3 h-3 fill-white" />
+          Run Code
         </button>
       </div>
       <div className="font-mono text-sm">
         <Editor
-          height="200px"
+          height="240px"
           defaultLanguage="javascript"
           language="javascript"
           defaultValue={code}
@@ -118,16 +121,17 @@ export const NotebookCell: React.FC<NotebookCellProps> = ({
             lineNumbers: "on",
             scrollBeyondLastLine: false,
             automaticLayout: true,
-            padding: { top: 16, bottom: 16 },
+            padding: { top: 20, bottom: 20 },
             fixedOverflowWidgets: true,
+            fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
           }}
         />
       </div>
       {output.length > 0 && (
-        <div className="p-4 bg-zinc-900 border-t font-mono text-xs text-zinc-300">
-          <div className="text-zinc-500 mb-2 uppercase text-[10px] tracking-wider font-bold">Output</div>
+        <div className="p-6 bg-zinc-900 font-mono text-xs text-zinc-300">
+          <div className="text-zinc-500 mb-3 uppercase text-[10px] tracking-wider font-bold border-b border-zinc-800 pb-2">Console Output</div>
           {output.map((line, i) => (
-            <div key={i} className="whitespace-pre-wrap mb-1">{line}</div>
+            <div key={i} className="whitespace-pre-wrap mb-1.5 last:mb-0 leading-relaxed">{line}</div>
           ))}
         </div>
       )}

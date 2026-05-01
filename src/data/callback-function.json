@@ -1,0 +1,526 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "# Part 4 - Callback Function\r\nและแล้วเราก็มาถึงหัวข้อที่หัวโต งง และเข้าใจยากมากๆ แล้วนะครับ โดยในบทนี้เราจะมาทำความเข้าใจเรื่องของ \"Callback Function\"  \r\nคือการที่เรามอง Function เป็นเหมือนค่าค่านึงที่สามารถส่งไปเป็น Parameter ให้อีก Function ได้  \r\nซึ่งถือเป็นหัวข้อที่ยากแต่ก็มีความสำคัญมากๆ กับการทำ Frontend ไม่ว่าเราจะใช้ Framework ใดๆ ก็ตาม\r\n\r\nข้อให้ทุกคนสู้ๆ ครับ"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "function turing_machine(accept,callback){\r\n    if(accept){\r\n        return callback()\r\n    }\r\n    else{\r\n        return \"Nothing |\"\r\n    }\r\n}\r\n\r\nfunction greeting(){\r\n    return \"Callback!\"\r\n}\r\n\r\nconsole.log(\r\n    turing_machine(false,greeting),\r\n    turing_machine(true, greeting)\r\n)"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "Nothing | Callback!",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 4.1 - Function Declaration In JavaScript\r\nสำหรับข้อนี้ เราจะมาลองดูวิธีการประกาศ Function ในหลายๆแบบกันดูนะครับ"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "// [1]\r\nfunction addNormal(x,y){\r\n    return x + y\r\n}\r\n\r\n// [2]\r\nconst addAnonymous = function(x,y){\r\n    return x + y\r\n}\r\n\r\n// [3]\r\nconst addArrow = (x,y) => {\r\n    return x + y\r\n}\r\n\r\n// [4]\r\nconst addArrowButShorter = (x,y) => (x + y)"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "จากการประกาศทั้ง 4 อย่างข้างบน ทดลองรันดู"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "var x = 7, y = 5\r\nconsole.log(addNormal(x,y),\r\n    addAnonymous(x,y),\r\n    addArrow(x,y),\r\n    addArrowButShorter(x,y)\r\n)"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "12 12 12 12",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**[QUESTION]** จะพบว่ามันเวิคเหมือนกัน ลองดูว่าจากแบบ 1 ไปเรื่อยๆจนถึง 4 ค่อยๆมีวิธีเขียนเปลี่ยนไปยังไงบ้าง"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**[QUESTION]** ทีนี้ลองดูการเขียนฟังก์ชันในแบบที่ 3 กับ 4 คิดว่าทำไมแบบที่ 4 ถึงสามารถคืนค่าได้โดยไม่ใช้ return (ลองสังเกตุว่ามีวิธีเขียนอย่างไร ต่างจากแบบที่ 3 บ้าง)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "ในความจริงแล้วการเขียนฟังก์ชั่นทั้ง 4 แบบ มันทำงานเหมือนกันหมด แล้วแต่เลยว่าจะถนัดเขียนยังไง\r\nแต่ว่าเวลาที่เราไปทำงานจริงกับคนอื่นเนี่ย เค้าจะมีข้อตกลงกันว่า Function เนี่ยจะประกาศกันแบบไหน เพื่อให้มีทิศทางเดียวกัน\r\nและทำให้โค้ดดูมีระเบียบมากขึ้น"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 4.2 - Functional Programming\r\nประกาศ Function 4 ตัวเดิมกับข้อก่อนหน้า"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "// [1]\r\nfunction addNormal(x,y){\r\n    return x + y\r\n}\r\n\r\n// [2]\r\nconst addAnonymous = function(x,y){\r\n    return x + y\r\n}\r\n\r\n// [3]\r\nconst addArrow = (x,y) => {\r\n    return x + y\r\n}\r\n\r\n// [4]\r\nconst addArrowButShorter = (x,y) => (x + y)"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "ต่อมาลองสั่งแสดงผลฟังก์ชั่นเหล่านี้ **(แนะนำให้ไปลองทำใน Console ของตัว Browser อาจจะได้รายละเอียดที่ชัดเจนกว่าใน VSCode)**"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "console.log(\r\n    addNormal,\r\n    addAnonymous,\r\n    addArrow,\r\n    addArrowButShorter\r\n)"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "[Function: addNormal] [Function: addAnonymous] [Function: addArrow] [Function: addArrowButShorter]",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**[QUESTION]** คิดว่าสิ่งที่แสดงออกมา มีความหมายว่าอะไร แล้วมันต่างกับการเรียก Function แบบปกติ (เรียกแบบมีวงเล็บ \"()\" ต่อท้าย) ยังไง"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 4.3 - Callback Function Without Parameter"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "function func1(number,func){\r\n    if(number > 5){\r\n        return -999\r\n    }\r\n    else{\r\n        return func()\r\n    }\r\n}"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const gen20 = () => (20)\r\nconsole.log(gen20())"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "20",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**[QUESTION]** ลองทบทวนกันนิดนึง ว่า Function นี้ทำอะไร ถ้าเขียนเป็นแบบปกติ (`function gen20(){...}`) น่าจะเขียนยังไงนะ  \r\n**[HINT]** ลองกลับไปดูข้อ 4.1"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "console.log(func1(10,gen20))"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "-999",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "console.log(func1(0,gen20))"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "20",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**[QUESTION]** คิดว่า `func1()` ทำอะไรบ้าง และการส่ง `gen20` ไปเฉยๆ ส่งผลอะไรบ้าง"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "console.log(func1(0,() => (20)))"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "20",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**[QUESTION]** คิดว่า `() => (20)` กับ `gen20` มีการทำงานแบบเดียวกันไหม เพราะอะไร"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 4.4 - Callback Function With Parameter"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const func2 = (func) => {\r\n    const x = 10,y = 20,z = 30\r\n    return func(x,y,z)\r\n}"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "console.log(func2((x,y,z) => (x + y + z)))"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "60",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "console.log(func2((x,y,z) => (x * z - y)))"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "280",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**[QUESTION]** จาก 2 ตัวอย่างข้างบน `func2` รับอะไรเข้ามา และมีการทำงานอย่างไร"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "console.log(func2((x,y) => (x - y)))"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "-10",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "console.log(func2((y,z) => (y - z)))"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "-10",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**[QUESTION]** ทำไม 2 อันนี้ ถึงได้คำตอบที่เท่ากัน ทั้งที่ใช้ตัวแปรต่างกัน\r\n\r\nFunction ตัวนี้อาจจะช่วยแก้ข้อสงสัยได้"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "console.log(func2((a,b) => (a - b)))"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "-10",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "function max2(a,b){\r\n    return a > b ? a : b\r\n}\r\n\r\nfunction max3(a,b,c){\r\n    return max2(max2(a,b),c)\r\n}"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "console.log(func2(max3))"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "30",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "คิดว่าผลลัพธ์ที่ได้เกิดจากอะไร และการใส่ `max3()` เข้าไปแบบนี้ มันจะไปทำงานยังไง"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "มีถึงตรงนี้พอจะเข้าใจ Concept ของ Callback Function เพิ่มขึ้นไหมครับ  \r\nไอเดียก็เหมือนว่าเรา มอง Function เป็นค่าค่านึงที่เราจะสามารถส่งมันไปใน Function อื่นๆได้ โดยเป็นเหมือน  \r\nParameter ของ Function นั้นๆ  \r\n  \r\nในการเขียน Frontend เราก็จะเจอปัญหาประมาณนี้บ่อยๆนั่นแหละ แต่ถ้ายังรู้สึกไม่เข้าใจอีก  \r\nเราลองไปเขียน Callback Function กันเองบ้างดีกว่า  "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### Exercise\r\nจงสร้าง Function ชื่อ `callback()` ที่จะเป็น Callback Function ไปใช้กับตัว `func1()` และคืน String ที่เป็น `\"-\"` เท่ากับความยาวของ `amount`(String) ที่ `func1` รับมา  \r\n**[HINT]** ลองค่อยๆทำความเข้าใจว่า `func1` ทำอะไรบ้าง ตัว `callback` เราจะรับอะไรเข้ามาและทำอะไรเพื่อให้ `func1` ที่เรียก `callback` ทำงานถูกต้องตามโจทย์"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "function func1(amount,func) {\r\n    if (amount.length === 0) {\r\n        return -1\r\n    }else {\r\n        const result = func(amount.length)\r\n        return result\r\n    }\r\n}\r\n\r\nconst callback = (event) => {\r\n    /* ใส่โค้ดตรงนี้ */\r\n}\r\n\r\nconsole.log(\r\n    func1(\"***\",callback),\r\n    func1(\"****\",callback),\r\n    func1(\"*****\",callback),\r\n    func1(\"******\",callback),\r\n    func1(\"*******\",callback)\r\n)"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "undefined undefined undefined undefined undefined",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**OUTPUT**  \r\n`--- ---- ----- ------ -------`"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Bonus\r\n*ไว้อ่านแก้เบื่อ (หรืออาจจะเบื่อกว่าเดิมก็ได้)*  \r\n\r\n**Callback Function** มีพื้นฐานมาจากการเขียนโปรแกรมในรูปแบบที่เรียกว่า [Functional Programming](https://www.borntodev.com/2020/07/08/functional-programming-101/) ซึ่งมีพื้นฐานมาจากทฤษฎีคณิตศาสตร์ที่มีชื่อว่า [Lambda Calculus](https://www.tamemo.com/post/153/lambda-calculus/)  \r\nโดยแนวคิดเหล่านี้แม้จะดูมีความซับซ้อนกว่าการคิดแบบปกติ แต่ก็มีความสำคัญต่อทฤษฎีคอมพิวเตอร์ในการพิสูจน์ปัญหาชื่อดังอย่าง [Halting Problem](https://th.wikipedia.org/wiki/%E0%B8%9B%E0%B8%B1%E0%B8%8D%E0%B8%AB%E0%B8%B2%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%A2%E0%B8%B8%E0%B8%95%E0%B8%B4%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%97%E0%B8%B3%E0%B8%87%E0%B8%B2%E0%B8%99) ที่ทำให้รู้ถึงขอบเขตของความสามารถในการคำนวณ  \r\nและทำให้เรามีคอมพิวเตอร์ใช้กันในวันนี้ได้\r\n  \r\nใครจะรู้ว่าการเขียน Callback Function เพื่อแค่ให้ปุ่มหน้าเว็บกดได้ จะซ่อนทฤษฎีทางคอมพิวเตอร์ และการคำนวณไว้ยิ่งใหญ่ขนาดนี้"
+            ],
+            "outputs": []
+        }
+    ]
+}

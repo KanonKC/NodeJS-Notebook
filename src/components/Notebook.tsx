@@ -8,7 +8,7 @@ interface NotebookProps {
 
 export const Notebook: React.FC<NotebookProps> = ({ data }) => {
   return (
-    <div className="max-w-4xl mx-auto py-10 px-6">
+    <div className="max-w-4xl mx-auto py-10">
       {data.cells.map((cell, index) => (
         <NotebookCell
           key={index}

@@ -1,0 +1,516 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "# Part 6 - Asynchronous"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "ในข้อหัวนี้เราจะไปดูในเรื่องของการใช้ `async`/`await` กัน แต่ก่อนหน้านี้\r\nจะขอเกริ่นความเข้าใจเบื้องต้นให้น้องๆกันก่อน สำหรับ JavaScript นั้นจะมีการทำงานแบบ\r\nAsynchronous คือมีการทำงานแบบเบื้องหลัง ก็คือจะไม่ทำงานเรียงตามลำดับของการเขียนโค้ด  \r\n`- Kana`"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "    ตัวอย่างเช่น"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "setTimeout(() => console.log(\"Hello Javascript\"),1)\r\nconsole.log(\"Hello Python\")"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "Hello Python",
+                                "",
+                                "Hello Javascript",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "    จะเห็นว่าผลลัพธ์ \"Hello Python\" แสดงขึ้นมาก่อน \"Hello Javascript\"\r\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "ทำไมมันถึงต้องมีการทำงานแบบนี้ เพราะว่าภาษา javascript นั้นจะมีการทำงานที่ใช้เวลานานซึ่งเราไม่รู้ว่า\r\nการทำงานจะเสร็จเมื่อไหร่ ดังนั้นจึงเอาเวลาที่รอนั้นไปทำงานคำสั่งอื่นๆที่จำเป็นก่อน แล้วค่อยกลับดูผลลัพธ์จาก\r\nการทำงานที่ต้องรอ เราเรียกแบบที่ว่า **\"การทำงานแบบเบื้องหลัง\"** นั่นเองงับ"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "ต่อมาเราจะมาดูการทำงานที่สำคัญต่อ โดยในภาษา javascript นั้นจะมีการใช้\r\nmethod ที่ชื่อว่า fetch หรือ axios ซึ่งทำหน้าที่ในการรับส่งข้อมูลระหว่างเพจที่แสดงผลทางฝั่งบราวเซอร์\r\nกับทางฝั่งเซิฟเวอร์ โดยฝั่งบราวเซอร์จะส่งข้อมูลบางอย่างไปหาฝั่งเซิฟเวอร์เพื่อประมวลผล และจากนั้นฝั่งเซิฟเวอร์\r\nก็จะส่งผลลัพธ์กลับคืนมา ซึ่งผลลัพธที่ได้กลับมา เราจะเรียกมันว่า **\"promise\"**"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**[ส่วนนี้สำคัญนะงับ]**\r\nเนื่องด้วยข้อจำกัดในด้านเวลา จึงขอให้น้องๆจำไว้เลยว่าเมื่อใช้คำสั่ง fetch หรือ axios จะได้ค่ากลับมาเป็น **promise** ทุกครั้ง แล้ว **promise** ก็ทำงานแบบ asynchronous เช่นกันดังที่กล่าวไป โดย **promise** ที่คืนกลับมานั้นอาจะอยู่ในสถานะที่ทำงานสำเร็จ หรือทำงานล้มเหลวก็ได้"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "/* function นี้ทำงานอย่างไรน้องไม่จำเป็นต้องสนใจงับ ขอแค่รู้ว่าเรียกฟังชันก์ Info1() จะมีการคืนค่าที่เป็น promise มาให้เรา */\r\nfunction Info1() {\r\n    return Promise.resolve(\"Success Access\")\r\n}"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "    ลองรันและดูผลลัพธ์จะเห็นว่า ได้ค่า promise แล้วมีค่าบางอย่างอยู่ข้างใน promise"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "console.log(Info1(\"res\"))"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "Promise {",
+                                "  'Success Access',",
+                                "  [Symbol(async_id_symbol)]: 1467,",
+                                "  [Symbol(trigger_async_id_symbol)]: 14",
+                                "}",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "ทีนี้เราจะนำค่านั้นออกมายังไง สำหรับ promise จะมี เมธอด ที่ไว้จัดการกับ promise คือ เมธอด **then**"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "    ลองรันคำสั่งต่อไปนี้ สังเกตว่าจะได้ผลลัพธ์ออกมาแล้ว"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "/* สังเกตุว่าจะได้ผลลัพธ์ออกมาแล้ว */\r\nInfo1().then(result => console.log(result))"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "Success Access",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "อย่างที่พี่บอกไป promise นั้นจะมีสถานะที่ทำงานสำเร็จหรือทำงานล้มเหลว ในตัวอย่างด้านบนคือทำงานสำเร็จ\r\nตัวอย่างที่ทำงานล้มเหลวให้น้องดู cell ต่อไป ดังนี้"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "/* function นี้ทำงานอย่างไรน้องไม่จำเป็นต้องสนใจงับ ขอแค่รู้ว่าเรียกฟังชันก์ Info2() จะมีการคืนค่าที่เป็น promise มาให้เรา */\r\nfunction Info2() {\r\n    return Promise.reject(\"Fail Access\")\r\n}"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "    ลองรันและดูผลลัพธ์จะเห็นว่า ได้ค่า promise แล้วมีค่าบางอย่างอยู่ข้างใน promise พร้อมกับ error นั่นเอง แสดงว่า promise ทำงานล้มเหลว จึงมีการ cache"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "/* เมื่อทดลองรันเสร็จให้ทำการ comment ไว้เหมือนเดิมด้วย */\r\n// console.log(Info2())"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "ทีนี้เราจะจัดการกับ error อย่างไร สำหรับ promise จะมี เมธอด ที่ไว้จัดการกับ promise คือ เมธอด **catch**"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "    ลองรันคำสั่งต่อไปนี้ สังเกตว่าจะได้ผลลัพธ์ออกมาแล้ว  "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "/* สังเกตุว่าจะได้ผลลัพธ์ออกมาแล้ว */\r\nInfo2().catch(err => console.log(err))"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "Fail Access",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "ทีนี้เราจะรู้ได้อย่างไรว่า promise จะทำงานสำเร็จหรือทำงานล้มเหลว\r\nจะเห็นว่าเราไม่มีทางรู้เลยว่าจะทำงานสำเร็จหรือทำงานล้มเหลว "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "/* function นี้ทำงานอย่างไรน้องไม่จำเป็นต้องสนใจงับ ขอแค่รู้ว่าเรียกฟังชันก์ Data() จะมีการคืนค่าที่เป็น promise มาให้เรา */\r\nfunction Data() {\r\n    return new Promise((resolve,reject) => {\r\n        const m = Math.floor(Math.random()*10)\r\n        if (m > 5) {\r\n            resolve(\"Access Promise\")\r\n        } else {\r\n            reject(\"Fail Promise\")\r\n        }\r\n    })\r\n}"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "    ลองรันคำสั่งต่อไปนี้ไปเรื่อยๆ จะพบว่าค่าที่ได้มาจะมี promise ทั้งสถานะทำงานสำเร็จและล้มเหลวซึ่งเราไม่มีทางรู้"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "/* เมื่อทดลองรันเสร็จให้ทำการ comment ไว้เหมือนเดิมด้วย */\r\n// console.log(Data())"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "ดังนี้นเราจึงต้องใช้เมธอด **then** และ **catch** ในการจัดการ"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "    ลองรันคำสั่งดังนี้ จะพบว่าจะได้ผลลัพธ์จาก promise ออกมา แล้วไม่มีการ cache error เกิดขึ้นด้วย โปรแกรมสามารถทำงานต่อได้"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "Data().then(result => console.log(result)).catch(error => console.log(error))"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "Access Promise",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "ลองดูตัวอย่างนี้ แล้วพิจารณาดูว่าทำไมผลลัพธ์ถึงเป็นแบบนี้"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "Info1().then(result => console.log(result))\r\nconsole.log(\"=> 1\")\r\nconsole.log(\"=> 2\")"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "=> 1",
+                                "Success Access",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**[บรรทัดตรงนี้สำคัญนะงับ]**\r\nจำได้ไหมที่พี่บอกว่า promise ก็ทำงานแบบ asynchronous คือทำงานแบบเบื้องหลัง โดยจะให้คำสั่งที่อยู่ถัดไปทำงานก่อน\r\nถ้าเราอยากให้มันทำงานต่อเป็นลำดับหลังจากได้ค่าใน promise แล้วเราต้องนำคำสั่งไปไว้ในเมธอด **then** ดังนี้"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "Info1().then(result => {\r\n    console.log(result)\r\n    console.log(\"=> 3\")\r\n    console.log(\"=> 4\")\r\n})"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "Success Access",
+                                "=> 3",
+                                "=> 4",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "ทีนี้เวลาเรามีค่า **promise** มาถ้าเราอยากได้ค่ามาใช้ก่อนที่จำทำคำสั่งถัดไป ต้องใช้เมธอด then ตลอดก็จะเป็นเรื่องที่\r\nยุ่งยากพอสมควร จึงมีคำว่า **await** เข้ามาช่วยเรา โดยเป็นการรอคอยผลลัพธ์นั้นๆให้ทำงานเสร็จก่อนแล้วค่อยทำ\r\nคำสั่งต่อไป แต่การใช้ **await** มีข้อจำกัดคือต้องทำในฟังชันก์ **async** เท่านั้น"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "async function func1() {\r\n    const promise1 = await Promise.resolve(\"success 1\") // ส่วนนี้เข้าใจแค่ว่ามัน return promise กลับมาให้ก็พอ\r\n    console.log(\"=> \",promise1)\r\n\r\n    const promise2 = await Promise.resolve(\"success 2\") // ส่วนนี้เข้าใจแค่ว่ามัน return promise กลับมาให้ก็พอ\r\n    console.log(\"=> \",promise2)\r\n    console.log(\"=>  Hello Javascript\")\r\n}"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "    ลองรันฟังชันก์ต่อไปนี้ สังเกตว่ามันจำทำงานตามลำดับกัน"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "func1()"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "=>  success 1",
+                                "=>  success 2",
+                                "=>  Hello Javascript",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**อธิบายเพิ่มเติม** จะเห็นว่าเมื่อรันแล้ว จะมีการรอค่าจาก **promise1** มาก่อน แล้วค่อยทำการ จากนั้นถึงจะไปรอค่าจาก **promise2** แล้วค่อยทำการแสดง **Hello Javascript**"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "    ถ้าเราไม่ใช้ async-await จะต้องจัดการกับมันแบบนี้ ซึ่งจะเป็นคำสั่งที่ยาวมากจะเห็นว่าไม่สะดวกนัก"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.error",
+                            "value": {
+                                "name": "Error",
+                                "message": "Failed to generate code object, \nundefined\n                              ^\n\nUnexpected token 'ะ'",
+                                "stack": ""
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "function func2() {\r\n    const promise1 = Promise.resolve(\"success 1\") // ส่วนนี้เข้าใจแค่ว่ามัน return promise กลับมาให้ก็พอ\r\n    \r\n    promise1.then(result => {\r\n        console.log(\"=> \",result)\r\n\r\n        const promise2 = Promise.resolve(\"success 2\") // ส่วนนี้เข้าใจแค่ว่ามัน return promise กลับมาให้ก็พอ\r\n        promise2.then(result => {\r\n            console.log(\"=> \",result)\r\n        })\r\n    })\r\n}"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "    ลองรันฟังชันก์ต่อไปนี้ สังเกตว่ามันจำทำงานตามลำดับกันเหมือนกับ func1"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "func2()"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "=>  success 1",
+                                "=>  success 2",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

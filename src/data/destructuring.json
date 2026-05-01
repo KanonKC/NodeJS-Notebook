@@ -1,0 +1,251 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "# Part #2 - Destructing\r\nหลังจากที่ลองวอร์มการเขียน Syntax ของตัว JavaScript แบบ Basic ไปแล้ว  \r\nต่อไปเราจะมาเรียนรู้เทคนิคการเขียนภาษา JavaScript ด้วยของต่างๆที่มีให้เรากันนะครับ ซึ่งของเหล่านี้หากเราใช้เป็นจะมีประโยชน์ และทำให้การเขียนโค้ดเราสะดวกขึ้นมากๆเลยครับ\r\n\r\nในหัวข้อนี้เราจะมาลองแกะข้อมูลภายใน Array/Object กันแล้วเอามายัดใส่ตัวแปรตรงๆ โอเคอาจจะงงที่เขียนไปข้างบน แต่เดี๋ยวลองดูตัวอย่างแล้วอาจจะพอเข้าใจขึ้นก็ได้"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "สมมุติว่าเรามีข้อมูลเป็นแบบนี้"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const arr = ['A','B','C','D','E']"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "เราน่าจะเคยประกาศตัวแปรแบบนี้กันใช่ไหมครับ เวลาที่ต้องดึงค่าจาก Array ออกมา"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let a = arr[0]\r\nlet b = arr[1]\r\nconsole.log(a,b)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "เราสามารถลดรูปการเขียนสิ่งเหล่านี้ได้ โดยการใช้เทคนิคที่เรียกว่า \"Array Destructing\""
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let [a,b] = arr\r\nconsole.log(a,b)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 2.1 - Array Destructing\r\nเราจะเริ่มทำความเข้าใจการ Destructing โดยเราจะขอยกตัวอย่างจาก Array ก่อน"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const arr = ['A','B','C','D','E']"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let [x] = arr\r\nconsole.log(x)"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "A",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**[QUESTION]** คิดว่า x แทนค่าอะไรในตัวแปร arr"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let [y,z] = arr\r\nconsole.log(y,z)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**[QUESTION]** คิดว่า y,z แทนค่าอะไรในตัวแปร arr"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 2.2 - Object Destructing\r\nในข้อก่อนหน้านี้ เราได้ลองแกะข้อมูลใน Array ไปแล้ว ซึ่งก็ดูไม่ค่อยจะมีประโยชน์อะไร แต่ในหัวข้อนี้ เราจะมาแกะตัว Object กัน ซึ่งในการใช้งานจริงเราจะใช้กับ Object บ่อยกว่า Array มาก"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const item = {\r\n    name: \"Apple\",\r\n    price: 35.99,\r\n    tags: [\"fruit\",\"consumable\"],\r\n    stock: 10\r\n}"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let { price } = item\r\nconsole.log('Price:',price)\r\n\r\nlet { name,tags } = item\r\nconsole.log('Name:',name)\r\nconsole.log('tags:',tags)"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "Price: 35.99",
+                                "Name: Apple",
+                                "",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**[QUESTION]** คิดว่าถ้าเปลี่ยนตัวแปร name, price, tags จากที่ผ่านมาเป็นตัวแปรอื่น จะยังได้ค่าเดิมอยู่ไหม"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 2.3 - Object Destructing In Function"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const item_lists = [\r\n    {\r\n        name: \"Apple\",\r\n        price: 40.00,\r\n        tags: [\"fruit\",\"consumable\"],\r\n        stock: 10\r\n    },\r\n    {\r\n        name: \"Ice Cream\",\r\n        price: 70.00,\r\n        tags: [\"dessert\",\"consumable\"],\r\n        stock: 10\r\n    }\r\n]\r\n\r\nlet [ apple,icecream ] = item_lists"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "ต่อมาเราลองสร้าง Function ที่จะคืนราคาโปรโมชั่นกลับมา ตามประเภทของสินค้าที่เกี่ยวข้อง ดังนี้"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "function viewPromotion1(item){\r\n    if(item.tags.includes(\"fruit\")){\r\n        return item.price * 0.75\r\n    }\r\n    else if(item.tags.includes(\"dessert\")){\r\n        return item.price * 0.5\r\n    }\r\n    else{\r\n        return item.price\r\n    }\r\n}\r\n\r\nconsole.log(\r\n    viewPromotion1(apple),\r\n    viewPromotion1(icecream)\r\n)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "ด้วยแนวคิดของ Destructing Object ที่ได้ยกตัวอย่างไว้ในข้อที่แล้ว ทำให้เราสามารถสร้าง Function นี้ใหม่ในรูปแบบนี้ได้"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "function viewPromotion2(item){\r\n    let { tags,price } = item\r\n    if(tags.includes(\"fruit\")){\r\n        return price * 0.75\r\n    }\r\n    else if(tags.includes(\"dessert\")){\r\n        return price * 0.5\r\n    }\r\n    else{\r\n        return price\r\n    }\r\n}\r\n\r\nconsole.log(\r\n    viewPromotion1(apple),\r\n    viewPromotion1(icecream)\r\n)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**[QUESTION]** คิดว่าทำไมการเขียนแบบนี้ จึงสามารถให้ผลลัพธ์เหมือนกับแบบที่ 1"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "ซึ่งจากแบบที่ 2 เรายังสามารถย่อมันต่อได้อีกดัง Function ที่ 3"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "function viewPromotion3({ tags,price }){\r\n    if(tags.includes(\"fruit\")){\r\n        return price * 0.75\r\n    }\r\n    else if(tags.includes(\"dessert\")){\r\n        return price * 0.5\r\n    }\r\n    else{\r\n        return price\r\n    }\r\n}\r\n\r\nconsole.log(\r\n    viewPromotion1(apple),\r\n    viewPromotion1(icecream)\r\n)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**[QUESTION]** คิดว่าทำไมการเขียนแบบนี้ จึงสามารถให้ผลลัพธ์เหมือนกับแบบที่ 2 และมีอะไรที่เขียนแตกต่างกัน"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**[QUESTION]** คิดว่าทำไมการเขียนแบบนี้ มีข้อดี/ข้อเสีย อะไรบ้าง"
+            ],
+            "outputs": []
+        }
+    ]
+}
